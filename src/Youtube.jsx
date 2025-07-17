@@ -1,17 +1,18 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools';
 const Youtube = () => {
     const form = useForm({
-        defaultValues:{
-            username:"Batman",
-            email:"",
-            channel:"",
-            social:{
+        defaultValues: {
+            username: "Batman",
+            email: "",
+            channel: "",
+            social: {
                 twitter: "",
                 facebook: ""
             },
             phoneNumbers: ["", ""],
+            skills: [{ skill: "" }]
         }
     });
     console.log(form)
@@ -19,6 +20,11 @@ const Youtube = () => {
     const { register, control, handleSubmit, formState } = form;
 
     const { errors } = formState
+
+    const { fields, append, remove } = useFieldArray({
+        name: "skills",
+        control
+    })
 
     // define a function which should be called when submit button is pressed
     //destructre the function handleSubmit
@@ -51,8 +57,8 @@ const Youtube = () => {
                             notAdmin: (fieldValue) => {
                                 return (fieldValue !== "admin@example.com" || "Enter a disfferent email address!");
                             },
-                            notBlackListed: (fieldValue) =>{
-                               return !fieldValue.endsWith("baddomain.com") || "This domain is not supported";
+                            notBlackListed: (fieldValue) => {
+                                return !fieldValue.endsWith("baddomain.com") || "This domain is not supported";
                             }
                         }
                     })} />
@@ -88,6 +94,27 @@ const Youtube = () => {
                 <div style={{ margin: "20px" }}>
                     <label htmlFor='secondary-phone'>Secondary phone number : </label>
                     <input type='text' id='secondary-phone' {...register("phoneNumbers.1")} />
+                </div>
+                <div>
+                    <label>List of skills</label>
+                    <div>
+                        {
+                            fields.map((field, index) => {
+                                return (
+                                    <div key={field.id}>
+                                        <input type='text' {...register(`skills.${index}.skill`)} />
+                                        {
+                                            index > 0 && (
+                                                <button type='button' onClick={()=> remove(index)}>remove</button>
+                                            )
+                                        }
+                                    </div>
+                                )
+                            })
+                        }
+
+                        <button type='button'  onClick={() => append({skill: ""})}>add skill</button>
+                    </div>
                 </div>
                 <button>submit</button>
             </form>
