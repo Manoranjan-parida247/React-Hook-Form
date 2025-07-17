@@ -1,10 +1,10 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-
+import { DevTool } from '@hookform/devtools';
 const Youtube = () => {
     const form = useForm();
     console.log(form)
-    const {register} = form;
+    const {register, control} = form;
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <form>
@@ -22,6 +22,7 @@ const Youtube = () => {
                 </div>
                 <button>submit</button>
             </form>
+            <DevTool control={control} />
         </div>
     )
 }
