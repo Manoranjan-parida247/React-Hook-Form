@@ -4,6 +4,7 @@ import { DevTool } from '@hookform/devtools';
 const Youtube = () => {
     const form = useForm();
     console.log(form)
+    console.log("rendered")
     const {register, control} = form;
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
